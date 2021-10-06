@@ -1,1 +1,7 @@
-# react-password-generator
+# React Password Generator
+
+## Develop
+
+```shell
+yarn start
+```
