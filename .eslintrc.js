@@ -4,9 +4,10 @@ module.exports = {
   env: {
     browser: true,
     es2020: true,
-    node: true
+    node: true,
   },
   extends: [
+    'prettier',
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
@@ -25,7 +26,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react', 'import'],
   settings: {
     react: {
-      version: 'detect'
+      version: 'detect',
     },
     'import/resolver': {
       node: {
@@ -42,10 +43,10 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
     '@typescript-eslint/no-misused-new': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', { 'args': 'after-used' }],
+    '@typescript-eslint/no-unused-vars': ['error', { args: 'after-used' }],
     'no-console': 'error',
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/no-onchange': 'off',
     'no-irregular-whitespace': 'off',
   },
-}
+};
