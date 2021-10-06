@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.scss';
 
-function App() {
+const App = (): JSX.Element => {
   return (
     <div className="App">
       <header className="App-header">
@@ -16,6 +16,6 @@ function App() {
       </header>
     </div>
   );
-}
+};
 
 export default App;
