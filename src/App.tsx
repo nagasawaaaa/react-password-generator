@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { generate } from 'generate-password';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 
 interface PasswordOptions {
   length: number;
-  numbers: boolean;
-  symbols: boolean;
+  numbers?: boolean;
+  symbols?: boolean;
 }
 
 const App = (): JSX.Element => {
-  const [length, setLength] = useState<number>(18);
+  const [length, setLength] = useState<number>(16);
+  const [numbers, setUseNumberState] = useState<boolean>(false);
+  const [symbols, setUseSymbolState] = useState<boolean>(false);
+  const [options, setOptions] = useState<PasswordOptions>({ length, numbers, symbols });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [password, setPassword] = useState<string>(generate({ length }));
+
   const handleChangeRange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setLength(Number(event.target.value));
   };
 
-  const [numbers, setUseNumberState] = useState<boolean>(false);
   const handleChangeNumber = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setUseNumberState(event.target.checked);
   };
 
-  const [symbols, setUseSymbolState] = useState<boolean>(false);
   const handleChangeSymbol = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setUseSymbolState(event.target.checked);
   };
@@ -30,15 +34,13 @@ const App = (): JSX.Element => {
     navigator.clipboard.writeText(event.currentTarget.value);
   };
 
-  const generatePassword = ({ length, numbers, symbols }: PasswordOptions) => {
-    // eslint-disable-next-line no-console
-    console.log('generate');
-    return generate({
-      length,
-      numbers,
-      symbols,
-    });
-  };
+  useEffect(() => {
+    setOptions({ length, numbers, symbols });
+  }, [length, numbers, symbols]);
+
+  useEffect(() => {
+    setPassword(generate(options));
+  }, [options]);
 
   return (
     <div>
@@ -48,12 +50,7 @@ const App = (): JSX.Element => {
             <Form>
               <Form.Group className="mb-3" controlId="formGroupExecPw">
                 <Form.Label>Password:</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={generatePassword({ length, numbers, symbols })}
-                  readOnly
-                  onClick={handleClickInput}
-                />
+                <Form.Control type="text" value={password} readOnly onClick={handleClickInput} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupEmail">
                 <Form.Label>Password length: {length}</Form.Label>
