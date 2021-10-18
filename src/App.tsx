@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { generate } from 'generate-password';
-import { Container, Row, Col, Form } from 'react-bootstrap';
-import { InputRange, InputCheck } from './components';
+import { Container, Row, Col, Form, Toast, ToastContainer } from 'react-bootstrap';
+import { Header, InputRange, InputCheck } from './components';
 
 interface PasswordOptions {
   length: number;
@@ -18,10 +18,13 @@ interface Props {
   numbersLabel: string;
   symbolsId: string;
   symbolsLabel: string;
+  toastShow: boolean;
+  toastDelay: number;
   onClickPassword: (event: React.MouseEvent<HTMLInputElement>) => void;
   onChangeRange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeNumbers: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeSymbols: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCloseToast: (isShow: boolean) => void;
 }
 
 const Component = ({
@@ -33,15 +36,19 @@ const Component = ({
   max,
   symbolsId,
   symbolsLabel,
+  toastShow,
+  toastDelay,
   onClickPassword,
   onChangeRange,
   onChangeSymbols,
   onChangeNumbers,
+  onCloseToast,
 }: Props): JSX.Element => {
   return (
     <div>
-      <Container>
-        <Row>
+      <Header />
+      <Container className="mt-4" fluid="sm">
+        <Row className="justify-content-md-center">
           <Col>
             <Form>
               <Form.Group className="mb-3" controlId="formGroupExecPw">
@@ -58,6 +65,15 @@ const Component = ({
             </Form>
           </Col>
         </Row>
+        <Row>
+          <Col xs={6}>
+            <ToastContainer position="top-center">
+              <Toast onClose={() => onCloseToast(false)} show={toastShow} delay={toastDelay} autohide>
+                <Toast.Body>Password Copied!</Toast.Body>
+              </Toast>
+            </ToastContainer>
+          </Col>
+        </Row>
       </Container>
     </div>
   );
@@ -69,6 +85,7 @@ const App = (): JSX.Element => {
   const [symbols, setUseSymbolState] = useState<boolean>(false);
   const [options, setOptions] = useState<PasswordOptions>({ length, numbers, symbols });
   const [password, setPassword] = useState<string>(generate({ length }));
+  const [toastShow, setToastShow] = useState(false);
 
   const handleChangeRange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setLength(Number(event.target.value));
@@ -83,9 +100,14 @@ const App = (): JSX.Element => {
   };
 
   const handleClickInput = (event: React.MouseEvent<HTMLInputElement>): void => {
-    event.preventDefault();
     event.currentTarget.select();
-    navigator.clipboard.writeText(event.currentTarget.value);
+    navigator.clipboard.writeText(event.currentTarget.value).then(() => {
+      setToastShow(true);
+    });
+  };
+
+  const handleCloseToast = (isShow: boolean): void => {
+    setToastShow(isShow);
   };
 
   useEffect(() => {
@@ -110,6 +132,9 @@ const App = (): JSX.Element => {
       symbolsId="includeSymbols"
       symbolsLabel="パスワードに特殊文字を含める"
       onChangeSymbols={handleChangeSymbol}
+      onCloseToast={handleCloseToast}
+      toastDelay={1500}
+      toastShow={toastShow}
     />
   );
 };
