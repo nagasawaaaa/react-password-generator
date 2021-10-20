@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { generate } from 'generate-password';
 import { Container, Row, Col, Form, Toast, ToastContainer } from 'react-bootstrap';
-import { Header, InputRange, InputCheck } from './components';
+import { Header, InputRange, InputCheck, Footer } from './components';
 
 interface PasswordOptions {
   length: number;
@@ -50,9 +50,14 @@ const Component = ({
       <Container className="mt-4" fluid="sm">
         <Row className="justify-content-md-center">
           <Col>
+            <p>The password you created will be copied by clicking.</p>
+          </Col>
+        </Row>
+        <Row className="justify-content-md-center">
+          <Col>
             <Form>
               <Form.Group className="mb-3" controlId="formGroupExecPw">
-                <Form.Label>Password:</Form.Label>
+                <Form.Label>Generated Password:</Form.Label>
                 <Form.Control type="text" value={password} readOnly onClick={onClickPassword} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupEmail">
@@ -75,6 +80,7 @@ const Component = ({
           </Col>
         </Row>
       </Container>
+      <Footer />
     </div>
   );
 };
