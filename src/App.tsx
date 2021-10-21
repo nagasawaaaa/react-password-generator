@@ -50,19 +50,19 @@ const Component = ({
       <Container className="mt-4" fluid="sm">
         <Row className="justify-content-md-center">
           <Col>
-            <p>The password you created will be copied by clicking.</p>
+            <p>パスワードをクリックするとクリップボードにコピーされます。（スマホは不可）</p>
           </Col>
         </Row>
         <Row className="justify-content-md-center">
           <Col>
             <Form>
               <Form.Group className="mb-3" controlId="formGroupExecPw">
-                <Form.Label>Generated Password:</Form.Label>
+                <Form.Label>作成したパスワード:</Form.Label>
                 <Form.Control type="text" value={password} readOnly onClick={onClickPassword} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupEmail">
                 <InputRange max={max} min={min} length={length} onChange={onChangeRange}>
-                  <>Password length: {length}</>
+                  <>文字数: {length}</>
                 </InputRange>
                 <InputCheck id={numbersId} label={numbersLabel} onChange={onChangeNumbers} />
                 <InputCheck id={symbolsId} label={symbolsLabel} onChange={onChangeSymbols} />
@@ -74,7 +74,7 @@ const Component = ({
           <Col xs={6}>
             <ToastContainer position="top-center">
               <Toast onClose={() => onCloseToast(false)} show={toastShow} delay={toastDelay} autohide>
-                <Toast.Body>Password Copied!</Toast.Body>
+                <Toast.Body>作成したパスワードがクリップボードにコピーされました！</Toast.Body>
               </Toast>
             </ToastContainer>
           </Col>
